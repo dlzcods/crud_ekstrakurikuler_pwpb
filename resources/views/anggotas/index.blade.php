@@ -1,17 +1,20 @@
 @extends('adminlte::page')
 
-@section('title', 'Kelola Anggota Ekstrakurikuler & Organisasi')
+@section('title', 'Kelola Anggota ' . $ekskul->nama)
 
 @section('content_header')
-    <h1>Kelola data Anggota Ekstrakurikuler & Organisasi</h1>
+    <h1>Kelola data Anggota {{ $ekskul->nama }}</h1>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <a href="{{ route('anggota.create', $ekskul->id) }}" class="btn btn-primary m-2">Tambah</a>
+                    <a href="{{ route('ekskul.index') }}" class="btn btn-success m-2">Semua Ekskul</a>
+                </div>
                 <div class="card-body">
-                    <a href="{{ route('anggota.create') }}" class="btn btn-success mb-3">Tambah</a>
                     <table class="table table-bordered" id="anggota-table" style="width: 100%">
                         <thead>
                             <tr>
@@ -19,7 +22,6 @@
                                 <th>NIS</th>
                                 <th>Nama</th>
                                 <th>Kelas</th>
-                                <th>Mengikuti</th>
                                 <th>Peran</th>
                                 <th>Action</th>
                             </tr>
@@ -31,14 +33,19 @@
                                 <td>{{ $anggota->nis }}</td>
                                 <td>{{ $anggota->nama }}</td>
                                 <td>{{ $anggota->kelas }}</td>
-                                <td>{{ $anggota->ekskuls[0]->nama }}</td>
-                                <td>{{ $anggota->perans[0]->nama }}</td>
+                                <td>{{ $anggota->perans()->wherePivot('ekskul_id', $ekskul->id)->first()->nama }}</td>
                                 <td>
-                                    <a href="{{ route('anggota.edit', $anggota->id) }}" class="btn btn-success mr-1">Edit</a>
-                                    <form action="{{ route('anggota.destroy', $anggota->id) }}" method="post" style="display: inline">
+                                    <a href="{{ route('anggota.edit', [
+                                        'siswa' => $anggota->id,
+                                        'ekskul' => $ekskul->id
+                                    ]) }}" class="btn btn-success m-1">Edit</a>
+                                    <form action="{{ route('anggota.destroy', [
+                                        'siswa' => $anggota->id,
+                                        'ekskul' => $ekskul->id
+                                    ]) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="submit" class="btn btn-danger m-1">Hapus</button>
                                     </form>
                                 </td>
                             </tr>

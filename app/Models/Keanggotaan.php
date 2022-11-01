@@ -10,7 +10,7 @@ class Keanggotaan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'anggota_id',
+        'siswa_id',
         'ekskul_id',
         'peran_id'
     ];

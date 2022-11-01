@@ -12,6 +12,6 @@ class Peran extends Model
     protected $fillable = ['nama'];
 
     public function anggotas() {
-      return $this->belongsToMany(Anggota::class, 'keanggotaans', 'peran_id', 'anggota_id');
+      return $this->belongsToMany(Siswa::class, 'keanggotaans', 'peran_id', 'siswa_id')->withPivot('ekskul_id');
     }
 }

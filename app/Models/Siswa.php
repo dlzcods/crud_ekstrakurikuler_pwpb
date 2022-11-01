@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Anggota extends Model
+class Siswa extends Model
 {
     use HasFactory;
 
@@ -16,10 +16,10 @@ class Anggota extends Model
     ];
 
     public function ekskuls() {
-        return $this->belongsToMany(Ekskul::class, 'keanggotaans', 'anggota_id', 'ekskul_id');
+        return $this->belongsToMany(Ekskul::class, 'keanggotaans', 'siswa_id', 'ekskul_id');
     }
 
     public function perans() {
-        return $this->belongsToMany(Peran::class, 'keanggotaans', 'anggota_id', 'peran_id');
+        return $this->belongsToMany(Peran::class, 'keanggotaans', 'siswa_id', 'peran_id')->withPivot('ekskul_id', 'id');
     }
 }

@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('ekskul.create') }}" class="btn btn-success mb-3">Tambah</a>
+                    <a href="{{ route('ekskul.create') }}" class="btn btn-primary mb-3">Tambah</a>
                     <table class="table table-bordered" id="ekskul-table" style="width: 100%">
                         <thead>
                             <tr>
@@ -30,12 +30,13 @@
                                 <td>{{ $ekskul->kategori }}</td>
                                 <td>{{ $ekskul->nama_pembina }}</td>
                                 <td>
-                                    <a href="{{ route('ekskul.edit', $ekskul->id) }}" class="btn btn-success mr-1">Edit</a>
+                                    <a href="{{ route('ekskul.edit', $ekskul->id) }}" class="btn btn-success m-1">Edit</a>
                                     <form action="{{ route('ekskul.destroy', $ekskul->id) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="submit" class="btn btn-danger m-1">Hapus</button>
                                     </form>
+                                    <a href="/ekskul/{{ $ekskul->id }}/anggota" class="btn btn-primary m-1">Anggota</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -68,7 +69,6 @@
         title: "{{ session('info')['message'] }}",
         icon: "{{ session('info')['type'] }}"
     });
-    console.log("{{ session('info')['message'] }}")
 </script>
 @endif
 @endsection
