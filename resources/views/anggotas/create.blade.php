@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Tambah Anggota Ekstrakurikuler & Organisasi')
+@section('title', 'Tambah Anggota ' . $ekskul->nama)
 
 @section('content_header')
-    <h1>Tambah data Anggota Ekstrakurikuler & Organisasi</h1>
+    <h1>Tambah data Anggota {{ $ekskul->nama }}</h1>
 @endsection
 
 @section('content')
@@ -11,32 +11,24 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{ route('anggota.index') }}" class="btn btn-success">Kembali</a>
+                    <a href="{{ route('anggota.index', $ekskul->id) }}" class="btn btn-success">Kembali</a>
                 </div>
-                <form action="{{ route('anggota.store') }}" method="post">
+                <form action="{{ route('anggota.store', $ekskul->id) }}" method="post">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="nis" class="form-label">NIS:</label>
-                            <input type="number" name="nis" id="nis" class="form-control">
-                            @error('nis') <span class="text-danger text-italic">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="nama" class="form-label">Nama:</label>
-                            <input type="text" name="nama" id="nama" class="form-control">
-                            @error('nama') <span class="text-danger text-italic">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="kelas" class="form-label">Kelas:</label>
-                            <input type="text" name="kelas" id="kelas" class="form-control">
-                            @error('kelas') <span class="text-danger text-italic">{{ $message }}</span> @enderror
+                            <label for="siswa_id" class="form-label">Pilih Siswa:</label>
+                            <select name="siswa_id" id="siswa_id" class="form-control">
+                                @foreach($siswas as $siswa)
+                                    <option value="{{ $siswa->id }}">{{ $siswa->nis }} - {{ $siswa->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('anggota_id') <span class="text-danger text-italic">{{ $message }}</span> @enderror
                         </div>
                         <div class="form-group">
                             <label for="ekskul_id" class="form-label">Orges yang Diikuti:</label>
-                            <select name="ekskul_id" id="ekskul_id" class="form-control">
-                                @foreach($ekskuls as $ekskul)
+                            <select name="ekskul_id" id="ekskul_id" class="form-control" readonly>
                                 <option value="{{ $ekskul->id }}">{{ $ekskul->nama }}</option>
-                                @endforeach
                             </select>
                             @error('ekskul_id') <span class="text-danger text-italic">{{ $message }}</span> @enderror
                         </div>

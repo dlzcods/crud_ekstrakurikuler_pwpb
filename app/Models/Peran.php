@@ -10,4 +10,8 @@ class Peran extends Model
     use HasFactory;
 
     protected $fillable = ['nama'];
+
+    public function anggotas() {
+      return $this->belongsToMany(Siswa::class, 'keanggotaans', 'peran_id', 'siswa_id')->withPivot('ekskul_id');
+    }
 }

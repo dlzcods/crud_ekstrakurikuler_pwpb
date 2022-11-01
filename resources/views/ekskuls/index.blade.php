@@ -11,8 +11,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('ekskul.create') }}" class="btn btn-success mb-3">Tambah</a>
-                    <table class="table table-bordered" id="ekskul-table">
+                    <a href="{{ route('ekskul.create') }}" class="btn btn-primary mb-3">Tambah</a>
+                    <table class="table table-bordered" id="ekskul-table" style="width: 100%">
                         <thead>
                             <tr>
                                 <th style="width: 3rem">No</th>
@@ -30,12 +30,13 @@
                                 <td>{{ $ekskul->kategori }}</td>
                                 <td>{{ $ekskul->nama_pembina }}</td>
                                 <td>
-                                    <a href="{{ route('ekskul.edit', $ekskul->id) }}" class="btn btn-success mr-1">Edit</a>
+                                    <a href="{{ route('ekskul.edit', $ekskul->id) }}" class="btn btn-success m-1">Edit</a>
                                     <form action="{{ route('ekskul.destroy', $ekskul->id) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="button" data-dialog-message="Hapus data ekskul <strong>{{ $ekskul->nama }}</strong>? Ini akan menghapus semua data keanggotaannya juga. Tindakan ini tidak dapat diurungkan" class="btn btn-danger m-1" onclick="showConfirmDialog(this)">Hapus</button>
                                     </form>
+                                    <a href="/ekskul/{{ $ekskul->id }}/anggota" class="btn btn-primary m-1">Anggota</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -50,7 +51,8 @@
 @section('js')
 <script>
     $('#ekskul-table').DataTable({
-        responsive: true
+        responsive: true,
+        scrollX: true
     });
 
     const Toast = Swal.mixin({
@@ -59,6 +61,23 @@
         showConfirmButton: false,
         toast: true
     });
+
+
+    function showConfirmDialog(elem) {
+        Swal.fire({
+            title: 'Hapus data ini?',
+            html: $(elem).attr('data-dialog-message'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Hapus',
+            icon: 'warning'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $(elem).parent().submit();
+            }
+        });
+    }
 </script>
 
 @if(session('info'))
@@ -67,7 +86,6 @@
         title: "{{ session('info')['message'] }}",
         icon: "{{ session('info')['type'] }}"
     });
-    console.log("{{ session('info')['message'] }}")
 </script>
 @endif
 @endsection

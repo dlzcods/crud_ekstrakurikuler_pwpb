@@ -296,8 +296,8 @@ return [
             'icon' => 'fas fa-fw fa-home',
         ],
         [
-            'text' => 'Anggota',
-            'url'  => '/anggota',
+            'text' => 'Siswa',
+            'url'  => '/siswa',
             'icon' => 'fas fa-fw fa-users',
         ],
         [

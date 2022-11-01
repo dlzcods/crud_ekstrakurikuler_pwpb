@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('peran.create') }}" class="btn btn-success mb-3">Tambah</a>
+                    <a href="{{ route('peran.create') }}" class="btn btn-primary mb-3">Tambah</a>
                     <table class="table table-bordered" id="peran-table">
                         <thead>
                             <tr>
@@ -26,11 +26,11 @@
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>{{ $peran->nama }}</td>
                                 <td>
-                                    <a href="{{ route('peran.edit', $peran->id) }}" class="btn btn-success mr-1">Edit</a>
+                                    <a href="{{ route('peran.edit', $peran->id) }}" class="btn btn-success m-1">Edit</a>
                                     <form action="{{ route('peran.destroy', $peran->id) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="button" data-dialog-message="Hapus data peran <strong>{{ $peran->nama }}</strong>? Ini akan menghapus semua data anggota dengan peran ini juga. Tindakan ini tidak dapat diurungkan" class="btn btn-danger m-1" onclick="showConfirmDialog(this)">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
@@ -55,6 +55,23 @@
         showConfirmButton: false,
         toast: true
     });
+
+
+    function showConfirmDialog(elem) {
+        Swal.fire({
+            title: 'Hapus data ini?',
+            html: $(elem).attr('data-dialog-message'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Hapus',
+            icon: 'warning'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $(elem).parent().submit();
+            }
+        });
+    }
 </script>
 
 @if(session('info'))

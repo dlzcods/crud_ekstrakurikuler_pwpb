@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
+use App\Models\Siswa;
 use App\Models\Ekskul;
 use App\Models\Peran;
+use App\Models\Keanggotaan;
 use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
@@ -14,9 +15,10 @@ class AnggotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($ekskul_id)
     {
-        $data['anggotas'] = Anggota::all();
+        $data['ekskul'] = Ekskul::find($ekskul_id);
+        $data['anggotas'] = $data['ekskul']->anggotas;
 
         return view('anggotas.index', $data);
     }
@@ -26,10 +28,11 @@ class AnggotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($ekskul_id)
     {
         $data['perans'] = Peran::all();
-        $data['ekskuls'] = Ekskul::all();
+        $data['siswas'] = Siswa::all();
+        $data['ekskul'] = Ekskul::find($ekskul_id);
 
         return view('anggotas.create', $data);
     }
@@ -40,19 +43,17 @@ class AnggotaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $ekskul_id)
     {
         $request->validate([
-            'nis' => 'required',
+            'siswa_id' => 'required',
             'ekskul_id' => 'required',
             'peran_id' => 'required',
-            'nama' => 'required',
-            'kelas' => 'required',
         ]);
 
-        Anggota::create($request->all());
+        Keanggotaan::create($request->all());
 
-        return redirect()->route('anggota.index')->with('info', [
+        return redirect()->route('anggota.index', $ekskul_id)->with('info', [
             'message' => 'Data berhasil ditambahkan!',
             'type' => 'success'
         ]);
@@ -75,9 +76,12 @@ class AnggotaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($ekskul_id, $siswa_id)
     {
-        $data['anggotas'] = Anggota::find($id);
+        $data['perans'] = Peran::all();
+        $data['ekskul'] = Ekskul::find($ekskul_id);
+        $data['siswa'] = $data['ekskul']->anggotas()->wherePivot('siswa_id', $siswa_id)->first();
+
         return view('anggotas.edit', $data);
     }
 
@@ -88,20 +92,21 @@ class AnggotaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $ekskul_id, $siswa_id)
     {
         $request->validate([
-            'nis' => 'required',
+            'siswa_id' => 'required',
             'ekskul_id' => 'required',
             'peran_id' => 'required',
-            'nama' => 'required',
-            'kelas' => 'required',
         ]);
 
-        $anggota = Anggota::find($id);
+        $anggota = Keanggotaan::firstWhere([
+            'ekskul_id' => $ekskul_id,
+            'siswa_id' => $siswa_id
+        ]);
         $anggota->update($request->all());
 
-        return redirect()->route('anggota.index')->with('info', [
+        return redirect()->route('anggota.index', $ekskul_id)->with('info', [
             'message' => 'Data berhasil diubah!',
             'type' => 'success'
         ]);
@@ -113,12 +118,15 @@ class AnggotaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ekskul_id, $siswa_id)
     {
-        $anggota = Anggota::find($id);
+        $anggota = Keanggotaan::firstWhere([
+            'ekskul_id' => $ekskul_id,
+            'siswa_id' => $siswa_id
+        ]);
         $anggota->delete();
 
-        return redirect()->route('anggota.index')->with('info', [
+        return redirect()->route('anggota.index', $ekskul_id)->with('info', [
             'message' => 'Data berhasil dihapus',
             'type' => 'success'
         ]);
