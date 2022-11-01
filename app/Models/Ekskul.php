@@ -16,6 +16,6 @@ class Ekskul extends Model
     ];
 
     public function anggotas() {
-        return $this->hasMany(Anggota::class);
+      return $this->belongsToMany(Anggota::class, 'keanggotaans', 'ekskul_id', 'anggota_id');
     }
 }

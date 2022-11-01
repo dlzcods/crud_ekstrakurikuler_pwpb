@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use App\Models\Ekskul;
 use App\Models\Peran;
+use App\Models\Keanggotaan;
 use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
@@ -50,7 +51,17 @@ class AnggotaController extends Controller
             'kelas' => 'required',
         ]);
 
-        Anggota::create($request->all());
+        $anggotaBaru = Anggota::create([
+	          'nis' => $request->input('nis'),
+	          'nama' => $request->input('nama'),
+	          'kelas' => $request->input('kelas')
+        ]);
+
+        Keanggotaan::create([
+            'anggota_id' => $anggotaBaru->id,
+            'ekskul_id' => $request->input('ekskul_id'),
+            'peran_id' => $request->input('peran_id')
+        ]);
 
         return redirect()->route('anggota.index')->with('info', [
             'message' => 'Data berhasil ditambahkan!',

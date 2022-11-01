@@ -11,17 +11,15 @@ class Anggota extends Model
 
     protected $fillable = [
         'nis',
-        'ekskul_id',
-        'peran_id',
         'kelas',
         'nama'
     ];
 
-    public function ekskul() {
-        return $this->belongsTo(Ekskul::class);
+    public function ekskuls() {
+        return $this->belongsToMany(Ekskul::class, 'keanggotaans', 'anggota_id', 'ekskul_id');
     }
 
-    public function peran() {
-        return $this->belongsTo(Peran::class);
+    public function perans() {
+        return $this->belongsToMany(Peran::class, 'keanggotaans', 'anggota_id', 'peran_id');
     }
 }

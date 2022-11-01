@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-body">
                     <a href="{{ route('anggota.create') }}" class="btn btn-success mb-3">Tambah</a>
-                    <table class="table table-bordered" id="anggota-table">
+                    <table class="table table-bordered" id="anggota-table" style="width: 100%">
                         <thead>
                             <tr>
                                 <th style="width: 3rem">No</th>
@@ -31,8 +31,8 @@
                                 <td>{{ $anggota->nis }}</td>
                                 <td>{{ $anggota->nama }}</td>
                                 <td>{{ $anggota->kelas }}</td>
-                                <td>{{ $anggota->ekskul->nama }}</td>
-                                <td>{{ $anggota->peran->nama }}</td>
+                                <td>{{ $anggota->ekskuls[0]->nama }}</td>
+                                <td>{{ $anggota->perans[0]->nama }}</td>
                                 <td>
                                     <a href="{{ route('anggota.edit', $anggota->id) }}" class="btn btn-success mr-1">Edit</a>
                                     <form action="{{ route('anggota.destroy', $anggota->id) }}" method="post" style="display: inline">
@@ -54,7 +54,8 @@
 @section('js')
 <script>
     $('#anggota-table').DataTable({
-        responsive: true
+        responsive: true,
+        scrollX: true
     });
 
     const Toast = Swal.mixin({

@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-body">
                     <a href="{{ route('ekskul.create') }}" class="btn btn-success mb-3">Tambah</a>
-                    <table class="table table-bordered" id="ekskul-table">
+                    <table class="table table-bordered" id="ekskul-table" style="width: 100%">
                         <thead>
                             <tr>
                                 <th style="width: 3rem">No</th>
@@ -50,7 +50,8 @@
 @section('js')
 <script>
     $('#ekskul-table').DataTable({
-        responsive: true
+        responsive: true,
+        scrollX: true
     });
 
     const Toast = Swal.mixin({
