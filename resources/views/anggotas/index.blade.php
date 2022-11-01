@@ -45,7 +45,7 @@
                                     ]) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger m-1">Hapus</button>
+                                        <button type="button" data-dialog-message="Hapus data keanggotaan <strong>{{ $anggota->nama }}</strong>? Ini akan mengeluarkannya dari keanggotaan di <strong>{{ $ekskul->nama }}</strong>. Tindakan ini tidak dapat diurungkan" class="btn btn-danger m-1" onclick="showConfirmDialog(this)">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
@@ -71,6 +71,23 @@
         showConfirmButton: false,
         toast: true
     });
+
+
+    function showConfirmDialog(elem) {
+        Swal.fire({
+            title: 'Hapus data ini?',
+            html: $(elem).attr('data-dialog-message'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Hapus',
+            icon: 'warning'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $(elem).parent().submit();
+            }
+        });
+    }
 </script>
 
 @if(session('info'))

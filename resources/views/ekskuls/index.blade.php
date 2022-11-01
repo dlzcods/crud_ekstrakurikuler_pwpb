@@ -34,7 +34,7 @@
                                     <form action="{{ route('ekskul.destroy', $ekskul->id) }}" method="post" style="display: inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger m-1">Hapus</button>
+                                        <button type="button" data-dialog-message="Hapus data ekskul <strong>{{ $ekskul->nama }}</strong>? Ini akan menghapus semua data keanggotaannya juga. Tindakan ini tidak dapat diurungkan" class="btn btn-danger m-1" onclick="showConfirmDialog(this)">Hapus</button>
                                     </form>
                                     <a href="/ekskul/{{ $ekskul->id }}/anggota" class="btn btn-primary m-1">Anggota</a>
                                 </td>
@@ -61,6 +61,23 @@
         showConfirmButton: false,
         toast: true
     });
+
+
+    function showConfirmDialog(elem) {
+        Swal.fire({
+            title: 'Hapus data ini?',
+            html: $(elem).attr('data-dialog-message'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Hapus',
+            icon: 'warning'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $(elem).parent().submit();
+            }
+        });
+    }
 </script>
 
 @if(session('info'))
