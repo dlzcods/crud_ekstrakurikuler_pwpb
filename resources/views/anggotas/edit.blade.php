@@ -38,7 +38,7 @@
                             <label for="peran_id" class="form-label">Peran Dalam Orges:</label>
                             <select name="peran_id" id="peran_id" class="form-control">
                                 @foreach($perans as $peran)
-                                <option value="{{ $peran->id }}">{{ $peran->nama }}</option>
+                                  <option value="{{ $peran->id }}" {{ ($siswa->perans()->firstWhere('ekskul_id', $ekskul->id)->id == $peran->id) ? 'selected' : '' }}>{{ $peran->nama }}</option>
                                 @endforeach
                             </select>
                             @error('peran_id') <span class="text-danger text-italic">{{ $message }}</span> @enderror
