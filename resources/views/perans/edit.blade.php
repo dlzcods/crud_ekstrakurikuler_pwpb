@@ -20,6 +20,7 @@
                         <div class="form-group">
                             <label for="nama" class="form-label">Nama:</label>
                             <input type="text" name="nama" id="nama" class="form-control" value="{{ $peran->nama }}">
+                            @error('nama') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="card-footer">

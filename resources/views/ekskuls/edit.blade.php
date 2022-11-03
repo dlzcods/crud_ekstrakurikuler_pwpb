@@ -20,14 +20,19 @@
                         <div class="form-group">
                             <label for="nama" class="form-label">Nama:</label>
                             <input type="text" name="nama" id="nama" class="form-control" value="{{ $ekskul->nama }}">
+                            @error('nama') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="form-group">
                             <label for="kategori" class="form-label">Kategori:</label>
-                            <input type="text" name="kategori" id="kategori" class="form-control" value="{{ $ekskul->kategori }}">
+                            <select name="kategori" id="kategori" class="form-control">
+                                <option value="Ekstrakurikuler">Ekstrakurikuler</option>
+                                <option value="Organisasi">Organisasi</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="nama_pembina" class="form-label">Nama Pembina:</label>
                             <input type="text" name="nama_pembina" id="nama_pembina" class="form-control" value="{{ $ekskul->nama_pembina }}">
+                            @error('nama_pembina') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="card-footer">
